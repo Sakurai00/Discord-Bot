@@ -1,18 +1,22 @@
-import os, discord
+import discord
 from discord.ext import commands
-import settings
+import settings as st
 
-TOKEN = settings.TOKEN
-bot = commands.Bot(command_prefix = "!")
-presence = discord.Game("Bot test")
+
+discord_intents = discord.Intents.all()
+
+bot = commands.Bot(
+    command_prefix = "!",
+    case_insensitive=True,
+    intents = discord_intents,
+    activity = discord.Game("Bot test")
+)
 
 
 
 @bot.event
 async def on_ready():
-    print(discord.__version__)
-    print("ready.")
-    await bot.change_presence(activity = presence)
+    print(discord.__version__ + "ready")
 
 @bot.command()
 async def whoami(ctx):
@@ -22,11 +26,11 @@ async def whoami(ctx):
 
 
 def main():
-    #bot.run(TOKEN)
     try:
-        bot.loop.run_until_complete(bot.start(TOKEN))
+        bot.loop.run_until_complete(bot.start(st.TOKEN))
     except KeyboardInterrupt:
         bot.loop.run_until_complete(bot.close())
+
 
 if __name__ == '__main__':
     main()
